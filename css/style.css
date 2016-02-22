@@ -1,8 +1,5 @@
 body {
-  max-width: 500px;
   text-align: center;
-  margin-left: auto;
-  margin-right: auto;
   background: #d4e6e7;
 }
 
@@ -15,6 +12,11 @@ nav {
   background-color: rgba(73, 90, 97, 0.73);
   font-size: 2em;
   letter-spacing: 1em;
+}
+
+.content {
+  width: 500px;
+  margin: auto;
 }
 
 h1 {
