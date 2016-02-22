@@ -3,7 +3,7 @@
   // REVIEW: code must be readable!
     function mobile_depend(window_w) {
         return $(window).width() <= parseInt(window_w);
-    };
+    }
 
     $(window).load(function(){
 
@@ -27,11 +27,7 @@
                     readyToHide = false;
                 }
             });
-        };
-
-        function is_scrolling() {
-            // TODO: return true if scrolling, false - not scrolling
-        };
+        }
 
         if (!hidden&&mobile_depend(2000)) {
             $('nav').delay(3000).animate({top:-elemHeight+'px'},{
@@ -41,7 +37,7 @@
                     hidden = true;
                 }
             });
-        };
+        }
 
         var lastScroll = $(window).scrollTop();
 
@@ -70,14 +66,14 @@
                         }
                     });
 
-                };
-            };
+                }
+            }
 
             if (!hidden&&(currentScroll>lastScroll)&&curTimer) {
                 $('nav').stop();
                 clearTimeout(curTimer);
                 hide_nav();
-            };
+            }
 
             lastScroll = currentScroll;
         });
