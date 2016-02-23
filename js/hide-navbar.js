@@ -1,4 +1,4 @@
-$(function() {
+;$(function() {
 
   function mobile_depend(window_width) {
     return $(window).width()<=parseInt(window_width);
@@ -49,6 +49,7 @@ $(function() {
               },
               done: function() {
                 hide_navbar = true;
+                hidden=true;
                 timerId=setTimeout(hideNavbar, 2000);
               }
 
@@ -57,7 +58,7 @@ $(function() {
           };
 
         };
-        if(!hidden) {
+        if(hidden) {
           if (newScrollTop > lastScrollTop) {
               clearTimeout(timerId);
               hideNavbar();
