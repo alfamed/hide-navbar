@@ -13,7 +13,7 @@
       var hide_navbar = false;
 
       function hideNavbar() {
-        $('.navbar').animate({top: -nHeight + "px"}, {
+        $('.navbar').stop().animate({top: -nHeight + "px"}, {
           duration: slideDuration,
           easing: 'linear',
           start: function() {
@@ -49,7 +49,6 @@
               },
               done: function() {
                 hide_navbar = true;
-                hidden=true;
                 timerId=setTimeout(hideNavbar, 2000);
               }
 
@@ -58,7 +57,7 @@
           };
 
         };
-        if(hidden) {
+        if(!hidden) {
           if (newScrollTop > lastScrollTop) {
               clearTimeout(timerId);
               hideNavbar();
