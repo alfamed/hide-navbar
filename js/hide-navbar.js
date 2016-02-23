@@ -1,82 +1,72 @@
-;$(function(){
-  // TODO: navigation bar element must be hiddent in idle
-  // REVIEW: code must be readable!
-    function mobile_depend(window_w) {
-        return $(window).width() <= parseInt(window_w);
-    }
+;$(function() {
 
-    $(window).load(function(){
+  function mobile_depend(window_width) {
+    return $(window).width()<=parseInt(window_width);
+  }
+    $(window).load(function() {
+      var nHeight=$('.navbar').height();
+      var hidden=false;
+      var slideDuration=500;
+      var lastScrollTop;
+      var newScrollTop;
+      var timerId;
+      var hide_navbar = false;
 
-        var hidden = false,
-            slideDuration = 500,
-            curTimer,
-            scrollTimer,
-            scrolling,
-            readyToHide = false,
-            elemHeight = $('nav').height();
-
-        function hide_nav() {
-            $('nav').animate({top:-elemHeight+'px'},{
-                duration: slideDuration,
-                easing: 'linear',
-                start: function(){
-                    hidden = false;
-                },
-                done: function(){
-                    hidden = true;
-                    readyToHide = false;
-                }
-            });
-        }
-
-        if (!hidden&&mobile_depend(2000)) {
-            $('nav').delay(3000).animate({top:-elemHeight+'px'},{
-                duration: 1000,
-                easing: 'linear',
-                done: function(){
-                    hidden = true;
-                }
-            });
-        }
-
-        var lastScroll = $(window).scrollTop();
-
-        $(window).scroll(function(){
-
-            clearTimeout(curTimer);
-            if (readyToHide) {
-                curTimer = setTimeout(hide_nav, 1000);
-            }
-
-            var currentScroll = $(window).scrollTop();
-
-            if (hidden&&mobile_depend(2000)) {
-
-                if (currentScroll<lastScroll) {
-
-                    $('nav').animate({top:'0px'},{
-                        duration: slideDuration,
-                        easing: 'linear',
-                        start: function(){
-                            hidden = false;
-                        },
-                        done: function(){
-                            readyToHide = true;
-                            curTimer = setTimeout(hide_nav, 1000);
-                        }
-                    });
-
-                }
-            }
-
-            if (!hidden&&(currentScroll>lastScroll)&&curTimer) {
-                $('nav').stop();
-                clearTimeout(curTimer);
-                hide_nav();
-            }
-
-            lastScroll = currentScroll;
+      function hideNavbar() {
+        $('.navbar').stop().animate({top: -nHeight + "px"}, {
+          duration: slideDuration,
+          easing: 'linear',
+          start: function() {
+            hidden=false;
+          },
+          done: function() {
+            hidden=true;
+            hide_navbar=false;
+          }
         });
+      }; //end hideNavbar function
 
-    });
-});
+      if (mobile_depend(768)&&(!hidden)) {
+        setTimeout(hideNavbar, 1000); //hide navbar as soon as page loads
+      };
+
+      var lastScrollTop = $(window).scrollTop();
+      $(window).scroll(function(){
+        var newScrollTop = $(window).scrollTop();
+
+        clearTimeout(timerId); //reset timer on scroll
+        if (hide_navbar) {
+          timerId=setTimeout(hideNavbar, 1000);
+        }
+
+        if (hidden) {
+          if (newScrollTop < lastScrollTop) {
+            $('.navbar').animate({top: 0 +'px'}, {
+              duration: slideDuration,
+              easing: 'linear',
+              start: function() {
+                hidden=false;
+              },
+              done: function() {
+                hide_navbar = true;
+                timerId=setTimeout(hideNavbar, 2000);
+              }
+
+            });//navbar is shown after scroll up
+
+          };
+
+        };
+        if(!hidden) {
+          if (newScrollTop > lastScrollTop) {
+              clearTimeout(timerId);
+              hideNavbar();
+          };
+        };
+
+        lastScrollTop = newScrollTop;
+      });//end scroll
+
+    });//end load
+
+});//end main function
