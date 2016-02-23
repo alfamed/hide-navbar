@@ -13,7 +13,7 @@
       var hide_navbar = false;
 
       function hideNavbar() {
-        $('.navbar').stop().animate({top: -nHeight + "px"}, {
+        $('.navbar').animate({top: -nHeight + "px"}, {
           duration: slideDuration,
           easing: 'linear',
           start: function() {
@@ -24,6 +24,7 @@
             hide_navbar=false;
           }
         });
+
       }; //end hideNavbar function
 
       if (mobile_depend(768)&&(!hidden)) {
@@ -51,16 +52,25 @@
                 hide_navbar = true;
                 timerId=setTimeout(hideNavbar, 2000);
               }
-
             });//navbar is shown after scroll up
-
           };
-
         };
+
+        if ((!hidden)&&(hide_navbar)) {
+          $('.navbar').stop().animate({top: 0 + 'px'}, {
+            duration: slideDuration,
+            easing: 'linear',
+            done: function() {
+              timerId=setTimeout(hideNavbar, 2000);
+            }
+          });
+        };
+
         if(!hidden) {
           if (newScrollTop > lastScrollTop) {
-              clearTimeout(timerId);
-              hideNavbar();
+            $('.navbar').stop();
+            clearTimeout(timerId);
+            hideNavbar();
           };
         };
 
