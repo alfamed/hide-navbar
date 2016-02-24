@@ -1,72 +1,70 @@
 ;$(function() {
+  var $elem = $('nav'),
+      animDuration = 1000,
+      delay = 2000,
+      timerId,
+      curScrollPos,
+      lastScrollPos;
 
-  function mobile_depend(window_width) {
-    return $(window).width()<=parseInt(window_width);
-  }
-    $(window).load(function() {
-      var nHeight=$('.navbar').height();
-      var hidden=false;
-      var slideDuration=500;
-      var lastScrollTop;
-      var newScrollTop;
-      var timerId;
-      var hide_navbar = false;
-
-      function hideNavbar() {
-        $('.navbar').stop().animate({top: -nHeight + "px"}, {
-          duration: slideDuration,
+  function hideElem(){
+    this.animate({top: -this.height() + "px"}, {
+          duration: animDuration,
           easing: 'linear',
           start: function() {
-            hidden=false;
+
           },
           done: function() {
-            hidden=true;
-            hide_navbar=false;
+
+          },
+          progress: function(){
+
+          },
+          always: function(){
+
           }
         });
-      }; //end hideNavbar function
+  };
 
-      if (mobile_depend(768)&&(!hidden)) {
-        setTimeout(hideNavbar, 1000); //hide navbar as soon as page loads
-      };
+  function showElem(){
+    this.animate({top: "0px"}, {
+          duration: animDuration,
+          easing: 'linear',
+          start: function() {
 
-      var lastScrollTop = $(window).scrollTop();
-      $(window).scroll(function(){
-        var newScrollTop = $(window).scrollTop();
+          },
+          done: function() {
 
-        clearTimeout(timerId); //reset timer on scroll
-        if (hide_navbar) {
-          timerId=setTimeout(hideNavbar, 1000);
-        }
+          },
+          progress: function(){
 
-        if (hidden) {
-          if (newScrollTop < lastScrollTop) {
-            $('.navbar').animate({top: 0 +'px'}, {
-              duration: slideDuration,
-              easing: 'linear',
-              start: function() {
-                hidden=false;
-              },
-              done: function() {
-                hide_navbar = true;
-                timerId=setTimeout(hideNavbar, 2000);
-              }
+          },
+          always: function(){
 
-            });//navbar is shown after scroll up
+          }
+        });
+  };
 
-          };
+  $(window).load(function(){
+    // after all page content had been loaded set the delay to execute hideElem function
+    timerId = setTimeout(hideElem.bind($elem), delay);
 
-        };
-        if(!hidden) {
-          if (newScrollTop > lastScrollTop) {
-              clearTimeout(timerId);
-              hideNavbar();
-          };
-        };
+    curScrollPos = $(window).scrollTop(); //current scroll position (after scroll manipulations)
 
-        lastScrollTop = newScrollTop;
-      });//end scroll
+    $(window).scroll(function(){
 
-    });//end load
+      lastScrollPos = $(window).scrollTop() // new scroll position after scroll made
 
-});//end main function
+      if (lastScrollPos<curScrollPos) {
+        hideElem.call($elem);
+      } else {
+        showElem.call($elem);
+      }
+
+      curScrollPos = lastScrollPos; //set new current scroll position
+
+    });
+
+
+  });
+
+});
