@@ -1,7 +1,6 @@
 body {
   text-align: center;
   background: #d4e6e7;
-  width: 100px;
 }
 
 nav {
@@ -26,4 +25,5 @@ h1 {
 
 p {
   text-align: justify;
+  width: 500px;
 }
